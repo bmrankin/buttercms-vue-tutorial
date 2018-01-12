@@ -748,7 +748,7 @@ Setup up a listener webhook on your hosting that will trigger a rebuild or redep
 
 Setup a POST Webhook in the ButterCMS dashboard with the Event "Blog Post Create, Update, or Delete" and paste the listener url into Target URL field.
 
-![ButterCMS Webhooks](https://github.com/bmrankin/buttercms-project/raw/ButterCMS-Webhooks.png "ButterCMS Webhooks")
+![ButterCMS Webhooks](https://github.com/bmrankin/buttercms-vue-tutorial/raw/ButterCMS-Webhooks.png "ButterCMS Webhooks")
 
 
 #### Create a basic webpack plugin
