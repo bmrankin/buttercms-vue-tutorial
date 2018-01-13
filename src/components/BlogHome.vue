@@ -11,7 +11,8 @@
               <article class="media">
                 <div class="media-left">
                   <figure class="image is-64x64">
-                    <!-- Bind results using a ':' --> <!-- Use a v-if/else if their is a featured_image -->
+                    <!-- Bind results using a ':' -->
+                    <!-- Use a v-if/else if their is a featured_image -->
                     <img v-if="post.featured_image" :src="post.featured_image" alt="">
                     <img v-else src="http://via.placeholder.com/250x250" alt="">
                   </figure>
@@ -32,17 +33,19 @@
 </template>
   
 <script>
-  import { butter } from '@/buttercms'
+  import {
+    butter
+  } from '@/buttercms'
   export default {
-      name: 'blog-home',
-      data() {
-          return {
-              page_title: 'Blog',
-              posts: [],
-              categories: []
-          }
-      },
-      methods: {
+    name: 'blog-home',
+    data() {
+      return {
+        page_title: 'Blog',
+        posts: [],
+        categories: []
+      }
+    },
+    methods: {
       getPosts() {
         butter.post.list({
           page: 1,
@@ -52,15 +55,17 @@
           this.posts = res.data.data
         })
       },
-      getCategories(){
+      getCategories() {
         butter.category.list()
           .then((res) => {
             console.log('List of Categories:')
             console.log(res.data.data)
           })
       },
-      getPostsByCategory(){
-          butter.category.retrieve('example-category', {include: 'recent_posts'})
+      getPostsByCategory() {
+        butter.category.retrieve('example-category', {
+            include: 'recent_posts'
+          })
           .then((res) => {
             console.log('Posts with specific category:')
             console.log(res)

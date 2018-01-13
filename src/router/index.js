@@ -43,12 +43,10 @@ export default new Router({
       name: 'blog-post',
       component: BlogPost
     },
-    
     {
       path: '/rss',
       name: 'rss',
       component: RssAtomSitemap
     },
-
   ]
 })

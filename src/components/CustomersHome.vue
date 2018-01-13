@@ -31,9 +31,7 @@
 
 <script>
   // import ButterCMS from 
-  import {
-    butter
-  } from '@/buttercms'
+  import { butter } from '@/buttercms'
   export default {
     name: 'customers-home',
     data() {
@@ -61,5 +59,5 @@
 </script>
 
 <style>
-
+  
 </style>

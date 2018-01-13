@@ -7,11 +7,8 @@
       <h1 class="is-size-2">{{ page.fields.headline }}</h1>
       <h3 class="is-size-3">Testimonials</h3>
       <div class="content" v-html="page.fields.testimonial"></div>
-
       <div class="content" v-html="page.fields.body"></div>
-
     </div>
-
   </div>
 </template>
 
@@ -43,10 +40,8 @@
       this.getPage()
     }
   }
-
 </script>
 
 <style>
-
-
+  
 </style>
