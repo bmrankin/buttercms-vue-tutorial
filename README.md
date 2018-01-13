@@ -552,10 +552,11 @@ export default new Router({
     <div class="container center">
       <div class="has-text-centered">
         <router-link v-if="post.meta.previous_post" :to="/blog/ + post.meta.previous_post.slug" class="button">
-          < {{ post.meta.previous_post.title }} </router-link>
-            <router-link v-if="post.meta.next_post" :to="/blog/ + post.meta.next_post.slug" class="button">
-              {{ post.meta.next_post.title }} >
-            </router-link>
+          < {{ post.meta.previous_post.title }}
+        </router-link>
+        <router-link v-if="post.meta.next_post" :to="/blog/ + post.meta.next_post.slug" class="button">
+          {{ post.meta.next_post.title }} >
+        </router-link>
       </div>
       <hr>
       <h1 class="is-size-2">{{ post.data.title }}</h1>
