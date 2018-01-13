@@ -33,9 +33,7 @@
 </template>
   
 <script>
-  import {
-    butter
-  } from '@/buttercms'
+  import { butter } from '@/buttercms'
   export default {
     name: 'blog-home',
     data() {

@@ -33,7 +33,8 @@ const butter = Butter('your_api_token');
 
 We'll import this file into any component we want to use ButterCMS.
 
-For a Quickstart go to ../components/HellowWorld.vue and import `buttercms.js` after `<script>`
+For a Quickstart go to ../components/HelloWorld.vue and import `buttercms.js` after `<script>`
+
 ```
 import { butter } from '@/buttercms'
 ```
@@ -42,24 +43,26 @@ Next create a method to call the ButterCMS API
 
 ```
 methods: {
-	fetchPosts(){
-		butter.post.list({page: 1, page_size: 10})
-			.then((res) => {
-				console.log('Content from ButterCMS')
-				console.log(res)
-			})
-	}
+    fetchPosts() {
+        butter.post.list({
+                page: 1,
+                page_size: 10
+            })
+            .then((res) => {
+                console.log('Content from ButterCMS')
+                console.log(res)
+            })
+    }
 }
-
 ```
 
-Now call this method when the component is loaded by adding it to the `created` lifecycle hook:
+Now call this method when the component is loaded by adding it to the `created` lifecycle hook after the methods object:
 ```
 methods: {
 ...
 },
 created() {
-	this.fetchPosts()
+    this.fetchPosts()
 }
 ```
 
@@ -68,21 +71,22 @@ This API request fetches our blog posts. Your account comes with one example pos
 Next, create another method to retrieve the Homepage Headline Content Field:
 
 ```
-fetchHeadline(){
-	butter.content.retrieve(['homepage_headline'])
-		.then(function(res) {
-			console.log('Headline')
-		  console.log(res)
-		})
-}
+
+fetchHeadline() {
+    butter.content.retrieve(['homepage_headline'])
+        .then((res) => {
+            console.log('Headline from ButterCMS')
+            console.log(res)
+        })
+},
 ```
 
 Add this method to the `created` lifecycle hook.
 
 ```
-create(){
-	this.fetchHeadline()
-	this.fetchPosts()
+created() {
+    this.fetchHeadline()
+    this.fetchPosts()
 }
 ```
 This API request fetches homepage headline content. You can setup your own custom content fields to manage any content kind of content you need.
@@ -134,31 +138,30 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import CustomersHome from '@/components/CustomersHome'
-import CustomersPage from '@/components/CustomersPage'
+import CustomerPage from '@/components/CustomerPage'
 
 Vue.use(Router)
 
 export default new Router({
-	mode: 'history',
+  mode: 'history',
   routes: [
     {
       path: '/',
       name: 'HelloWorld',
       component: HelloWorld
     },
-		{
+    {
       path: '/customers/',
       name: 'customers-home',
       component: CustomersHome
-    },{
+    },
+    {
       path: '/customers/:slug',
       name: 'customer-page',
       component: CustomerPage
     }
   ]
 })
-
-
 ```
 
 
@@ -172,32 +175,32 @@ export default new Router({
 
 ```
 <script>
-// import ButterCMS from 
-import { butter } from '@/buttercms'
-export default {
+  // import ButterCMS from 
+  import { butter } from '@/buttercms'
+  export default {
     name: 'customers-home',
     data() {
       return {
         page_title: 'Customers',
-        // Create array to hold the posts from ButterCMS API
-        posts: []
+        // Create array to hold the pages from ButterCMS API
+        pages: []
       }
     },
     methods: {
       // Get List of Customer Pages
       getPages() {
         butter.page.list('customer_case_study')
-        .then((res) => {
-          // console.log(res.data.data) // Check the results in the console
-          this.posts = res.data.data
-        })
+          .then((res) => {
+            // console.log(res.data.data) // Check the results in the console
+            this.pages = res.data.data
+          })
       }
     },
     created() {
       // Fire on page creation
       this.getPages()
     }
-}
+  }
 </script>
 ```
 
@@ -210,19 +213,19 @@ export default {
       <hr>
       <div class="columns is-multiline">
         <!-- Create v-for and apply a key for Vue. Example is using a combination of the slug and index -->
-        <div class="column is-one-third" v-for="(post,index) in posts" :key="post.slug + '_' + index">
-          <router-link :to="'/customers/' + post.slug">
+        <div class="column is-one-third" v-for="(page,index) in pages" :key="page.slug + '_' + index">
+          <router-link :to="'/customers/' + page.slug">
             <div class="box">
               <article class="media">
                 <div class="media-left">
                   <figure class="image is-64x64">
                     <!-- Bind results using a ':' -->
-                    <img :src="post.fields.customer_logo" alt="">
+                    <img :src="page.fields.customer_logo" alt="">
                   </figure>
                 </div>
                 <div class="media-content">
                   <div class="content">
-                    <h2 class="title is-5">{{ post.fields.headline }}</h2>
+                    <h2 class="title is-5">{{ page.fields.headline }}</h2>
                   </div>
                 </div>
               </article>
@@ -276,7 +279,6 @@ export default {
       this.getPage()
     }
   }
-
 </script>
 ```
 
@@ -291,11 +293,8 @@ export default {
       <h1 class="is-size-2">{{ page.fields.headline }}</h1>
       <h3 class="is-size-3">Testimonials</h3>
       <div class="content" v-html="page.fields.testimonial"></div>
-
       <div class="content" v-html="page.fields.body"></div>
-
     </div>
-
   </div>
 </template>
 ```
@@ -305,16 +304,18 @@ We can know navigate to the Customer Page via the list of all Customer Pages or 
 # Content Fields
 ## Integrate with your app
 ### Create FAQ Vue Component
+
 `components/FAQ.vue`
 
 ### Setup the route to your FAQ's page
+
 `router/index.js`:
+
 ```
 import Vue from 'vue'
 import Router from 'vue-router'
 ...
 import FAQ from '@/components/FAQ'
-
 
 Vue.use(Router)
 
@@ -339,32 +340,34 @@ export default new Router({
 #### Create the method to get the FAQ's
 ```
 <script>
-  import { butter } from '@/buttercms'
-  export default {
-      name: 'faq',
-      data() {
-          return {
-              page_title: 'FAQ',
-              faq_items: []
-          }
-      },
-      methods: {
-          getFaqs(){
-              butter.content.retrieve(['faq_headline','faq_items'])
-              .then((res)=>{
-                  console.log(res.data.data)
-                  this.page_title = res.data.data.faq_headline
-                  this.faq_items = res.data.data.faq_items
-              })
-          }
-      },
-      created(){
-          this.getFaqs()
-      }
-  }
+    import { butter } from '@/buttercms'
+    export default {
+        name: 'faq',
+        data() {
+            return {
+                page_title: 'FAQ',
+                faq_items: []
+            }
+        },
+        methods: {
+            getFaqs() {
+                butter.content.retrieve(['faq_headline', 'faq_items'])
+                    .then((res) => {
+                        console.log(res.data.data)
+                        this.page_title = res.data.data.faq_headline
+                        this.faq_items = res.data.data.faq_items
+                    })
+            }
+        },
+        created() {
+            this.getFaqs()
+        }
+    }
 </script>
 ```
+
 #### Display the result
+
 ```
 <template>
     <div id="faq">
@@ -379,7 +382,6 @@ export default new Router({
                 </div>
             </div>
         </div>
-        
     </div>
 </template>
 ```
@@ -395,6 +397,7 @@ To display posts we create a simple `/blog` route in our app and fetch blog post
 See our API reference for additional options such as filtering by category or author. The response also includes some metadata we'll use for pagination.
 
 ### Update the routes in our app
+
 `router/index.js:`
 
 ```
@@ -424,12 +427,13 @@ export default new Router({
       path: '/blog/:slug',
       name: 'blog-post',
       component: BlogPost
-    },
+    }
   ]
 })
 ```
 
 ### Setup the Blog page to list all our posts.
+
 `components/BlogHome.vue`
 
 #### Create method to get all posts
@@ -441,20 +445,20 @@ export default new Router({
 <script>
   import { butter } from '@/buttercms'
   export default {
-      name: 'blog-home',
-      data() {
-          return {
-              page_title: 'Blog',
-              posts: []
-          }
-      },
-      methods: {
+    name: 'blog-home',
+    data() {
+      return {
+        page_title: 'Blog',
+        posts: []
+      }
+    },
+    methods: {
       getPosts() {
         butter.post.list({
           page: 1,
           page_size: 10
         }).then((res) => {
-          console.log(res.data)
+          // console.log(res.data)
           this.posts = res.data.data
         })
       }
@@ -481,7 +485,8 @@ export default new Router({
               <article class="media">
                 <div class="media-left">
                   <figure class="image is-64x64">
-                    <!-- Bind results using a ':' --> <!-- Use a v-if/else if their is a featured_image -->
+                    <!-- Bind results using a ':' -->
+                    <!-- Use a v-if/else if their is a featured_image -->
                     <img v-if="post.featured_image" :src="post.featured_image" alt="">
                     <img v-else src="http://via.placeholder.com/250x250" alt="">
                   </figure>
@@ -517,13 +522,11 @@ export default new Router({
     name: 'blog-post',
     data() {
       return {
-        post: {
-        }
+        post: {}
       }
     },
     methods: {
       getPost() {
-        console.log('Hello')
         butter.post.retrieve(this.$route.params.slug)
           .then((res) => {
             // console.log(res.data)
@@ -547,11 +550,10 @@ export default new Router({
     <div class="container center">
       <div class="has-text-centered">
         <router-link v-if="post.meta.previous_post" :to="/blog/ + post.meta.previous_post.slug" class="button">
-          < {{ post.meta.previous_post.title }}
-        </router-link>
-        <router-link v-if="post.meta.next_post" :to="/blog/ + post.meta.next_post.slug" class="button">
-          {{ post.meta.next_post.title }} >
-        </router-link>
+          < {{ post.meta.previous_post.title }} </router-link>
+            <router-link v-if="post.meta.next_post" :to="/blog/ + post.meta.next_post.slug" class="button">
+              {{ post.meta.next_post.title }} >
+            </router-link>
       </div>
       <hr>
       <h1 class="is-size-2">{{ post.data.title }}</h1>
@@ -573,6 +575,7 @@ Visit the Vue.js docs to [learn more about Dynamic Route Matching](https://route
 To fix this we need to simply watch the $route object and call `getPost()` when the route changes.
 
 Updated `script` section in `components/BlogPost.vue`:
+
 ```
 <script>
   import { butter } from '@/buttercms'
@@ -580,13 +583,11 @@ Updated `script` section in `components/BlogPost.vue`:
     name: 'blog-post',
     data() {
       return {
-        post: {
-        }
+        post: {}
       }
     },
     methods: {
       getPost() {
-        console.log('Hello')
         butter.post.retrieve(this.$route.params.slug)
           .then((res) => {
             // console.log(res.data)
@@ -615,22 +616,32 @@ Now our app has a working blog that can be updated easily in the ButterCMS dashb
 Use Butter's APIs for categories, tags, and authors to feature and filter content on your blog:
 
 #### List all categories and get posts by category
-Call these methods on `created()`
+Call these methods on the `created()` lifecycle hook
 ```
-      getCategories(){
-        butter.category.list()
-          .then((res) => {
-            console.log('List of Categories:')
-            console.log(res.data.data)
-          })
-      },
-      getPostsByCategory(){
-          butter.category.retrieve('example-category', {include: 'recent_posts'})
-          .then((res) => {
-            console.log('Posts with specific category:')
-            console.log(res)
-          })
-      }
+methods: {
+    ...
+    getCategories() {
+    butter.category.list()
+        .then((res) => {
+        console.log('List of Categories:')
+        console.log(res.data.data)
+        })
+    },
+    getPostsByCategory() {
+    butter.category.retrieve('example-category', {
+        include: 'recent_posts'
+        })
+        .then((res) => {
+        console.log('Posts with specific category:')
+        console.log(res)
+        })
+    }
+},
+created() {
+    ...
+    this.getCategories()
+    this.getPostsByCategory()
+}
 ```
 
 ### RSS, Atom, and Sitemap
@@ -644,64 +655,63 @@ Create a file to see an example of what we get back from the API.
 <template>
     <div id="rss">
         <div v-if="rss">
-            <pre >
-                {{ rss }}
-            </pre> 
+            <pre>
+                    {{ rss }}
+                </pre>
             <hr>
         </div>
         <div v-if="atom">
-            <pre >
-                {{ atom }}
-            </pre> 
+            <pre>
+                    {{ atom }}
+                </pre>
             <hr>
         </div>
         <div v-if="sitemap">
-            <pre >
-                {{ sitemap }}
-            </pre> 
+            <pre>
+                    {{ sitemap }}
+                </pre>
             <hr>
         </div>
     </div>
 </template>
   
 <script>
-import { butter } from '@/buttercms'
-
-  export default {
-      name: 'rss-atom-sitemap',
-      data() {
-          return {
-              rss: '',
-              atom: '',
-              sitemap: ''
-          }
-      },
-      methods: {
-        getRss(){
-            butter.feed.retrieve('rss').then((res) => {
-                console.log(res.data.data)      
-                this.rss = res.data.data
-            })
+    import { butter } from '@/buttercms'
+    export default {
+        name: 'rss-atom-sitemap',
+        data() {
+            return {
+                rss: '',
+                atom: '',
+                sitemap: ''
+            }
         },
-        getAtom(){
-            butter.feed.retrieve('atom').then((res) => {
-                console.log(res.data.data)      
-                this.atom = res.data.data
-            })
+        methods: {
+            getRss() {
+                butter.feed.retrieve('rss').then((res) => {
+                    console.log(res.data.data)
+                    this.rss = res.data.data
+                })
+            },
+            getAtom() {
+                butter.feed.retrieve('atom').then((res) => {
+                    console.log(res.data.data)
+                    this.atom = res.data.data
+                })
+            },
+            getSitemap() {
+                butter.feed.retrieve('sitemap').then((res) => {
+                    console.log(res.data.data)
+                    this.sitemap = res.data.data
+                })
+            },
         },
-        getSitemap(){
-            butter.feed.retrieve('sitemap').then((res) => {
-                console.log(res.data.data)      
-                this.sitemap = res.data.data
-            })
-        },
-      },
-      created() {
-          this.getRss()
-          this.getAtom()
-          this.getSitemap()
-      }
-  }
+        created() {
+            this.getRss()
+            this.getAtom()
+            this.getSitemap()
+        }
+    }
 </script>
 ```
 
@@ -731,12 +741,12 @@ export default new Router({
       name: 'rss',
       component: RssAtomSitemap
     },
-
   ]
 })
 ```
 
 Navigate to `localhost:8080/rss`
+
 We can see ButterCMS passes back the entire xml need to create a feed or sitemap. However, this demo page will not work for our subscribers. We need to create xml files they can link to in their RSS readers.
 
 This can be a challenge for a static deployed site built using Vue that has dynamic content.
@@ -759,6 +769,7 @@ We are using a plugin as part of our webpack build that to create the XML files 
 Add the plugin to the webpack base config file by requiring it at the top of the file and then adding/updating the plugins array after the output object.
 
 `build/webpack.base.conf.js`
+
 ```
 'use strict'
 const path = require('path')
@@ -802,42 +813,45 @@ let Butter = require('buttercms')
 function BuildButterCmsXmlPlugin() {}
 
 BuildButterCmsXmlPlugin.prototype.apply = function (compiler) {
-    compiler.plugin('done', () => {
-        const butter = Butter('your_api_token')   
-        function getRss(){ 
-            var rss
-            butter.feed.retrieve('rss').then((res) => {
-                rss = res.data.data
-                fs.writeFileSync(
-                    path.resolve('dist/rss.xml'),
-                    rss
-                )
-            })
-        } 
-        function getAtom(){ 
-            var atom
-            butter.feed.retrieve('atom').then((res) => {
-                atom = res.data.data
-                fs.writeFileSync(
-                    path.resolve('dist/atom.xml'),
-                    atom
-                )
-            })
-        } 
-        function getSitemap(){ 
-            var sitemap
-            butter.feed.retrieve('sitemap').then((res) => {
-                sitemap = res.data.data
-                fs.writeFileSync(
-                    path.resolve('dist/sitemap.xml'),
-                    sitemap
-                )
-            })
-        } 
-        getRss()
-        getAtom()
-        getSitemap()
-    })
+  compiler.plugin('done', () => {
+    const butter = Butter('your_api_token')
+
+    function getRss() {
+      var rss
+      butter.feed.retrieve('rss').then((res) => {
+        rss = res.data.data
+        fs.writeFileSync(
+          path.resolve('dist/rss.xml'),
+          rss
+        )
+      })
+    }
+
+    function getAtom() {
+      var atom
+      butter.feed.retrieve('atom').then((res) => {
+        atom = res.data.data
+        fs.writeFileSync(
+          path.resolve('dist/atom.xml'),
+          atom
+        )
+      })
+    }
+
+    function getSitemap() {
+      var sitemap
+      butter.feed.retrieve('sitemap').then((res) => {
+        sitemap = res.data.data
+        fs.writeFileSync(
+          path.resolve('dist/sitemap.xml'),
+          sitemap
+        )
+      })
+    }
+    getRss()
+    getAtom()
+    getSitemap()
+  })
 }
 
 module.exports = BuildButterCmsXmlPlugin

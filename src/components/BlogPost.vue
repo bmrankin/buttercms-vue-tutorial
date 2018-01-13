@@ -27,7 +27,6 @@
     },
     methods: {
       getPost() {
-        console.log('Hello')
         butter.post.retrieve(this.$route.params.slug)
           .then((res) => {
             // console.log(res.data)
