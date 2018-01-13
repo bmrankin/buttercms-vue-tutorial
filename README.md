@@ -43,16 +43,16 @@ Next create a method to call the ButterCMS API
 
 ```
 methods: {
-    fetchPosts() {
-        butter.post.list({
-                page: 1,
-                page_size: 10
-            })
-            .then((res) => {
-                console.log('Content from ButterCMS')
-                console.log(res)
-            })
-    }
+  fetchPosts() {
+    butter.post.list({
+        page: 1,
+        page_size: 10
+      })
+      .then((res) => {
+        console.log('Content from ButterCMS')
+        console.log(res)
+      })
+  }
 }
 ```
 
@@ -62,7 +62,7 @@ methods: {
 ...
 },
 created() {
-    this.fetchPosts()
+  this.fetchPosts()
 }
 ```
 
@@ -71,13 +71,12 @@ This API request fetches our blog posts. Your account comes with one example pos
 Next, create another method to retrieve the Homepage Headline Content Field:
 
 ```
-
 fetchHeadline() {
-    butter.content.retrieve(['homepage_headline'])
-        .then((res) => {
-            console.log('Headline from ButterCMS')
-            console.log(res)
-        })
+  butter.content.retrieve(['homepage_headline'])
+    .then((res) => {
+      console.log('Headline from ButterCMS')
+      console.log(res)
+    })
 },
 ```
 
@@ -85,14 +84,16 @@ Add this method to the `created` lifecycle hook.
 
 ```
 created() {
-    this.fetchHeadline()
-    this.fetchPosts()
+  this.fetchHeadline()
+  this.fetchPosts()
 }
 ```
+
 This API request fetches homepage headline content. You can setup your own custom content fields to manage any content kind of content you need.
 
 # Pages
 ## Integrate your app
+
 With our page defined, the ButterCMS API will return it in JSON format like this:
 ```
 {
@@ -338,31 +339,32 @@ export default new Router({
 ```
 
 #### Create the method to get the FAQ's
+
 ```
 <script>
-    import { butter } from '@/buttercms'
-    export default {
-        name: 'faq',
-        data() {
-            return {
-                page_title: 'FAQ',
-                faq_items: []
-            }
-        },
-        methods: {
-            getFaqs() {
-                butter.content.retrieve(['faq_headline', 'faq_items'])
-                    .then((res) => {
-                        console.log(res.data.data)
-                        this.page_title = res.data.data.faq_headline
-                        this.faq_items = res.data.data.faq_items
-                    })
-            }
-        },
-        created() {
-            this.getFaqs()
-        }
+  import { butter } from '@/buttercms'
+  export default {
+    name: 'faq',
+    data() {
+      return {
+        page_title: 'FAQ',
+        faq_items: []
+      }
+    },
+    methods: {
+      getFaqs() {
+        butter.content.retrieve(['faq_headline', 'faq_items'])
+          .then((res) => {
+            console.log(res.data.data)
+            this.page_title = res.data.data.faq_headline
+            this.faq_items = res.data.data.faq_items
+          })
+      }
+    },
+    created() {
+      this.getFaqs()
     }
+  }
 </script>
 ```
 
@@ -370,19 +372,19 @@ export default new Router({
 
 ```
 <template>
-    <div id="faq">
-        <div class="section">
-            <div class="container">
-                <h1 class="is-size-1">{{ page_title }}</h1>
-                <hr>
-                <div v-for="(faq, index) in faq_items" :key="index">
-                    <p class="is-size-5">{{ faq.question }}</p>
-                    <p class="is-size-4">{{ faq.answer }}</p>
-                    <hr>
-                </div>
-            </div>
+  <div id="faq">
+    <div class="section">
+      <div class="container">
+        <h1 class="is-size-1">{{ page_title }}</h1>
+        <hr>
+        <div v-for="(faq, index) in faq_items" :key="index">
+          <p class="is-size-5">{{ faq.question }}</p>
+          <p class="is-size-4">{{ faq.answer }}</p>
+          <hr>
         </div>
+      </div>
     </div>
+  </div>
 </template>
 ```
 
@@ -619,28 +621,28 @@ Use Butter's APIs for categories, tags, and authors to feature and filter conten
 Call these methods on the `created()` lifecycle hook
 ```
 methods: {
-    ...
-    getCategories() {
+  ...
+  getCategories() {
     butter.category.list()
-        .then((res) => {
+      .then((res) => {
         console.log('List of Categories:')
         console.log(res.data.data)
-        })
-    },
-    getPostsByCategory() {
+      })
+  },
+  getPostsByCategory() {
     butter.category.retrieve('example-category', {
         include: 'recent_posts'
-        })
-        .then((res) => {
+      })
+      .then((res) => {
         console.log('Posts with specific category:')
         console.log(res)
-        })
-    }
+      })
+  }
 },
 created() {
-    ...
-    this.getCategories()
-    this.getPostsByCategory()
+  ...
+  this.getCategories()
+  this.getPostsByCategory()
 }
 ```
 
@@ -651,67 +653,68 @@ Butter generates RSS, Atom, and sitemap XML markup. To use these on your blog, r
 Create a file to see an example of what we get back from the API.
 
 `components/RssAtomSitemap.vue`
+
 ```
 <template>
-    <div id="rss">
-        <div v-if="rss">
-            <pre>
-                    {{ rss }}
-                </pre>
-            <hr>
-        </div>
-        <div v-if="atom">
-            <pre>
-                    {{ atom }}
-                </pre>
-            <hr>
-        </div>
-        <div v-if="sitemap">
-            <pre>
-                    {{ sitemap }}
-                </pre>
-            <hr>
-        </div>
+  <div id="rss">
+    <div v-if="rss">
+      <pre>
+        {{ rss }}
+      </pre>
+      <hr>
     </div>
+    <div v-if="atom">
+      <pre>
+        {{ atom }}
+      </pre>
+      <hr>
+    </div>
+    <div v-if="sitemap">
+      <pre>
+        {{ sitemap }}
+      </pre>
+      <hr>
+    </div>
+  </div>
 </template>
-  
+
 <script>
-    import { butter } from '@/buttercms'
-    export default {
-        name: 'rss-atom-sitemap',
-        data() {
-            return {
-                rss: '',
-                atom: '',
-                sitemap: ''
-            }
-        },
-        methods: {
-            getRss() {
-                butter.feed.retrieve('rss').then((res) => {
-                    console.log(res.data.data)
-                    this.rss = res.data.data
-                })
-            },
-            getAtom() {
-                butter.feed.retrieve('atom').then((res) => {
-                    console.log(res.data.data)
-                    this.atom = res.data.data
-                })
-            },
-            getSitemap() {
-                butter.feed.retrieve('sitemap').then((res) => {
-                    console.log(res.data.data)
-                    this.sitemap = res.data.data
-                })
-            },
-        },
-        created() {
-            this.getRss()
-            this.getAtom()
-            this.getSitemap()
-        }
+  import { butter } from '@/buttercms'
+  export default {
+    name: 'rss-atom-sitemap',
+    data() {
+      return {
+        rss: '',
+        atom: '',
+        sitemap: ''
+      }
+    },
+    methods: {
+      getRss() {
+        butter.feed.retrieve('rss').then((res) => {
+          console.log(res.data.data)
+          this.rss = res.data.data
+        })
+      },
+      getAtom() {
+        butter.feed.retrieve('atom').then((res) => {
+          console.log(res.data.data)
+          this.atom = res.data.data
+        })
+      },
+      getSitemap() {
+        butter.feed.retrieve('sitemap').then((res) => {
+          console.log(res.data.data)
+          this.sitemap = res.data.data
+        })
+      },
+    },
+    created() {
+      this.getRss()
+      this.getAtom()
+      this.getSitemap()
     }
+  }
 </script>
 ```
 
